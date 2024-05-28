@@ -1,4 +1,5 @@
 # functions go here
+# checks response is yes or no
 def yes_no(question):
     while True:
         response = input(question).lower()
@@ -11,6 +12,7 @@ def yes_no(question):
             print("please answer yes/no")
 
 
+# prints the instructions
 def instructions():
     print('''\n\n
     **** Welcome to Pizza Place ****
@@ -47,6 +49,35 @@ def instructions():
 
     **** Thanks for choosing Pizza Place! ****
         ''')
+
+
+# checks the response is a number more than 0
+def num_check(question, error, num_type):
+    valid = False
+    while not valid:
+
+        try:
+            response = num_type(input(question))
+
+            if response <= 0:
+                print(error)
+            else:
+                return response
+
+        except ValueError:
+            print(error)
+
+
+# checks that the response is not blank
+def not_blank(question):
+
+    while True:
+        response = input(question)
+
+        if response == "":
+            print("Please try again, your response cannot be blank.")
+        else:
+            return response
 
 
 # main routine here
