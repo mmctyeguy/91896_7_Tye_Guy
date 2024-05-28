@@ -1,4 +1,3 @@
-# functions go here
 def yes_no(question):
     while True:
         response = input(question).lower()
@@ -14,9 +13,9 @@ def yes_no(question):
 def instructions():
     print('''\n\n
     **** Welcome to Pizza Place ****
-
+    
     How to order:
-
+    
     ** Pickup vs Delivery **
     The program will ask if you would like 
     to order delivery, or to pick up.
@@ -25,17 +24,17 @@ def instructions():
     For pickup, we only need your name and 
     phone number, and we will provide you 
     the store's address.
-
+    
     ** Choosing a Pizza **
     You will be asked if you need to look at
     the menu, and then asked to select a
     pizza from the menu. 
-
+    
     ** Choosing a Side Dish **
     You will be asked if you need to look at
     the menu, and then asked to select a side
     dish from the menu.
-
+    
     ** Confirming your order + Payment options **
     You will be asked for a payment type, either
     cash or credit (1.5% surcharge). Then we will
@@ -44,16 +43,17 @@ def instructions():
     You will then be asked to either confirm or 
     cancel your order, or if you need to make any 
     changes.
-
+    
     **** Thanks for choosing Pizza Place! ****
         ''')
 
 
-# main routine here
+# main routine goes here
+while True:
+    ordered_before = yes_no("Have you ordered with us before?")
 
-ordered_before = yes_no("Have you ordered with us before?")
-if ordered_before == "no":
-    print(instructions())
+    if ordered_before == "no":
+        print(instructions())
 
-elif ordered_before == "yes":
-    print("Program continues")
+    print("program continues...")
+    print()
