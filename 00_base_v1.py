@@ -82,6 +82,10 @@ def not_blank(question):
 
 # main routine here
 
+reg_pizzas = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
+gourmet_pizzas = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
+sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
+
 ordered_before = yes_no("Have you ordered with us before?")
 if ordered_before == "no":
     print(instructions())
