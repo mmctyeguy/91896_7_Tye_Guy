@@ -13,16 +13,24 @@ def yes_no(question):
             print("please answer yes/no")
 
 
-# lists to hold menu items
-menu_list = [["cheese", 10], ["pepperoni", 12], ["hawaiian", 12], ["meatball", 15], ["vegetarian", 15]]
-gourmet_pizzas = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
-sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
+def menu():
+    # lists to hold menu items
+    menu_list_reg = [["cheese", 10], ["pepperoni", 12], ["hawaiian", 12], ["meatball", 15], ["vegetarian", 15]]
+    menu_list_gourmet = [["americano", 19], ["margherita", 16], ["supreme", 18], ["capricciosa", 22], ["shrimp", 19]]
+    menu_list_sides = [["mozzarella sticks", 14], ["L&P", 4], ["pepsi", 4], ["garlic bread", 8], ["sorbet", 9]]
 
-df = pandas.DataFrame(menu_list, columns=['Pizza', 'Price'])
+    reg = pandas.DataFrame(menu_list_reg, columns=['Pizza', 'Price'])
+    gourmet = pandas.DataFrame(menu_list_gourmet, columns=['Pizza', 'Price'])
+    sides = pandas.DataFrame(menu_list_sides, columns=['Item', 'Price'])
+
+    print(reg)
+    print(gourmet)
+    print(sides)
+
 
 show_menu = yes_no("Would you like to see the menu?")
 if show_menu == "yes":
-    print(df)
+    menu()
 else:
     print("Program continues...")
 
