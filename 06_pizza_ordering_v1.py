@@ -7,6 +7,8 @@ while True:
     pizza1 = input("What pizza would you like?")
     if pizza1 in reg_menu:
         print("You have chosen {}".format(pizza1))
+    elif pizza1 in gourmet_menu:
+        print("You have chosen {}".format(pizza1))
     else:
         print("Sorry, please order off the menu.")
 

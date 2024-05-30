@@ -1,5 +1,24 @@
-import pandas as pd
+def hello():
+    hello.counter += 1
+    return hello.counter
 
-from tabulate import tabulate
-df = pd.DataFrame({'Text': ['abcdef', 'x'], 'Value': [12.34, 4.2]})
-print(tabulate(df, showindex=False, headers=df.columns))
+
+def yes_no(question):
+    while True:
+        response = input(question).lower()
+
+        if response == "yes" or response == "y":
+            return "yes"
+        elif response == "no" or response == "n":
+            return "no"
+        else:
+            print("please answer yes/no")
+
+
+hello.counter = 0
+
+while True:
+    calling = yes_no("question?")
+    if calling == "yes":
+        hello()
+        print(hello.counter)

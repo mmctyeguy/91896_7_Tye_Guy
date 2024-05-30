@@ -6,15 +6,17 @@ gourmet_price = [16, 15, 19, 19, 22]
 
 def ordering(question, error):
     response = input(question)
-    if response in reg_menu:
-        return response
-    elif response not in reg_menu:
-        if response in gourmet_menu:
+    try:
+        if response in reg_menu:
             return response
-        elif response not in gourmet_menu:
-            print(error)
-    else:
+        elif response not in reg_menu:
+            if response in gourmet_menu:
+                return response
+            elif response not in gourmet_menu:
+                print(error)
+    except ValueError:
         print(error)
+    print("Sorry, you've reached the limit.")
 
 
 # main routine here
