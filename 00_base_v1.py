@@ -1,3 +1,7 @@
+import pandas as pd
+from tabulate import tabulate
+
+
 # functions go here
 # checks response is yes or no
 def yes_no(question):
@@ -80,15 +84,42 @@ def not_blank(question):
             return response
 
 
-# main routine here
+# takes in data from lists, converts it to tables with custom headers and prints
+# them back out with adjusted formatting via tabulate
+def menu():
+    reg = pd.DataFrame(list(zip(reg_menu, reg_price)),
+                       columns=['Regular Pizzas', 'Price'])
+    print(tabulate(reg, showindex=False, headers=reg.columns))
+    print("\n")
+    gourmet = pd.DataFrame(list(zip(gourmet_menu, gourmet_price)),
+                           columns=['Gourmet Pizzas', 'Price'])
+    print(tabulate(gourmet, showindex=False, headers=gourmet.columns))
+    print("\n")
+    sides = pd.DataFrame(list(zip(sides_menu, sides_price)),
+                         columns=['Add-Ons', 'Price'])
+    print(tabulate(sides, showindex=False, headers=sides.columns))
 
-reg_pizzas = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
-gourmet_pizzas = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
+
+# lists to hold menu items
+reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
+reg_price = [10, 12, 12, 15, 15]
+gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
+gourmet_price = [16, 15, 19, 19, 22]
 sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
+sides_price = [14, 4, 4, 8, 9]
 
-ordered_before = yes_no("Have you ordered with us before?")
-if ordered_before == "no":
-    print(instructions())
+# main routine begins
 
-elif ordered_before == "yes":
-    print("Program continues")
+while True:
+    ordered_before = yes_no("Have you ordered with us before?")
+    if ordered_before == "no":
+        print(instructions())
+
+    elif ordered_before == "yes":
+        continue
+
+    show_menu = yes_no("Would you like to see the menu?")
+    if show_menu == "yes":
+        menu()
+    else:
+        print("Program continues...")

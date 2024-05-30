@@ -16,13 +16,15 @@ def yes_no(question):
 
 def menu():
     reg = pd.DataFrame(list(zip(reg_menu, reg_price)),
-                       columns=['Pizza', 'Price'])
+                       columns=['Regular Pizzas', 'Price'])
     print(tabulate(reg, showindex=False, headers=reg.columns))
+    print("\n")
     gourmet = pd.DataFrame(list(zip(gourmet_menu, gourmet_price)),
-                           columns=['Pizza', 'Price'])
+                           columns=['Gourmet Pizzas', 'Price'])
     print(tabulate(gourmet, showindex=False, headers=gourmet.columns))
+    print("\n")
     sides = pd.DataFrame(list(zip(sides_menu, sides_price)),
-                         columns=['Item', 'Price'])
+                         columns=['Add-Ons', 'Price'])
     print(tabulate(sides, showindex=False, headers=sides.columns))
 
 
@@ -41,6 +43,3 @@ if show_menu == "yes":
 else:
     print("Program continues...")
 
-
-# to do - incorporate menus & prices for all + find way to split them based on category without
-# making another list
