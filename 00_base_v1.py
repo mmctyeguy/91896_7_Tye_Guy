@@ -116,7 +116,7 @@ while True:
         print(instructions())
 
     elif ordered_before == "yes":
-        continue
+        pass
 
     show_menu = yes_no("Would you like to see the menu?")
     if show_menu == "yes":
