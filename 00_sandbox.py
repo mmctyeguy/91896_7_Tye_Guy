@@ -70,7 +70,7 @@ your_order_dict = {
     "Sides": sides_order}
 
 
-# main routine here
+# main routine begins
 while True:
     chosen_pizza = pizza_ordering("What pizza would you like?",
                                   "Please choose from our menu,"
