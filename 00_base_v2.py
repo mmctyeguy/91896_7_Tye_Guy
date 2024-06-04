@@ -128,8 +128,8 @@ def sides_ordering(question, error):
         sides_order.append(response)
         print("You have chosen a {}. You have {} item/s in your basket.".format(response,
                                                                                 sides_counting.counter))
-        order_cost.append(sides())
-        print("Your current total is ${}".format((sum(order_cost))))
+        sides_cost.append(sides())
+        print("Your current total is ${}".format((sum(sides_cost))))
         return response
     else:
         print(error)
@@ -155,8 +155,8 @@ def pizza_ordering(question, error):
         pizza_counting()
         print("You have chosen a {}. You have {} item/s in your basket.".format(response,
                                                                                 pizza_counting.counter))
-        order_cost.append(pizza_price())
-        print("Your current total is ${}".format((sum(order_cost))))
+        pizza_cost.append(pizza_price())
+        print("Your current total is ${}".format((sum(pizza_cost))))
         return response
     elif response == "xxx":
         return response
@@ -177,19 +177,21 @@ reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
 reg_price = [10, 12, 12, 15, 15]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
 gourmet_price = [16, 15, 19, 19, 22]
-sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
+sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet"]
 sides_price = [14, 4, 4, 8, 9]
 
 # lists to hold order into
 pizza_order = []
 sides_order = []
-order_cost = []
+pizza_cost = []
+sides_cost = []
+
 
 # dict to organise order info
 your_order_dict = {
     "Pizzas": pizza_order,
     "Sides": sides_order,
-    "Cost": order_cost}
+    "Cost": pizza_cost + sides_cost}
 
 
 # main routine here
@@ -230,7 +232,11 @@ while True:
 
 while finished is True:
     print("You've ordered {}".format(your_order_dict))
-    print("Your total is ${}".format((sum(order_cost))))
+    print("Your total is ${}".format((sum(sides_cost + pizza_cost))))
     finished = False
 
+
+order_table = pd.DataFrame(your_order_dict)
+order_table.set_index('Pizza')
+print(order_table)
 
