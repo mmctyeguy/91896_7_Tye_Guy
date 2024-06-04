@@ -3,26 +3,33 @@ def pizza_counting():
     return pizza_counting.counter
 
 
+# checks if response is on the pizza menus
 def pizza_ordering(question, error):
     response = input(question).lower()
-    if response == "xxx":
+    pizza_menu = reg_menu + gourmet_menu
+
+    if response is None:
+        print(error)
+    elif response in pizza_menu:
+        pizza_order.append(response)
+        pizza_counting()
+        print("You have chosen a {}. You have {} item/s in your basket.".format(response,
+                                                                                pizza_counting.counter))
+        order_cost.append(get_price())
+        print("Your current total is ${}".format((sum(order_cost))))
         return response
-    elif response in reg_menu:
+    elif response == "xxx":
         return response
+    elif response in sides_menu:
+        print("Sorry, that looks like it's "
+              "from our sides menu. Please "
+              "order a pizza first.")
     else:
-        if response in gourmet_menu:
-            return response
-        else:
-            if response in sides_menu:
-                print("Sorry, that looks like it's "
-                      "from our sides menu. Please "
-                      "order a pizza first.")
-            else:
-                print(error)
+        print(error)
 
 
 def get_price():
-    pos = reg_menu.index(chosen_pizza)
+    pos = reg_menu.index()
     price = reg_price[pos]
     return price
 
@@ -37,30 +44,33 @@ sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
 sides_price = [14, 4, 4, 8, 9]
 
 pizza_order = []
+sides_order = []
 order_cost = []
+
+your_order_dict = {
+    "Pizzas": pizza_order,
+    "Sides": sides_order}
+
 
 # main routine here
 while True:
-    chosen_pizza = pizza_ordering("What pizza would you like?", "Please choose from our menu, or type"
-                                                                " 'xxx' to finish ordering off the Pizza menu.")
+    chosen_pizza = pizza_ordering("What pizza would you like?",
+                                  "Please choose from our menu,"
+                                  " or type 'xxx' to finish ordering "
+                                  "off the Pizza menu.")
+
     if pizza_counting.counter <= 5:
-        if chosen_pizza is None:
-            pass
-        elif chosen_pizza == "xxx":
+        if chosen_pizza == "xxx":
             if pizza_counting.counter <= 0:
                 print("Sorry, you must order at least 1 pizza.")
-            elif pizza_counting.counter >= 0:
+            else:
+                print(pizza_order)
                 finished = True
                 break
-        elif chosen_pizza in reg_menu or gourmet_menu:
-            pizza_order.append(chosen_pizza)
-            pizza_counting()
-            print("You have chosen a {}. You have {} item/s in your basket.".format(chosen_pizza,
-                                                                                    pizza_counting.counter))
-            order_cost.append(get_price())
-            print("Your current total is ${}".format((sum(order_cost))))
-    if pizza_counting.counter >= 5:
+
+    elif pizza_counting.counter >= 5:
         print("Sorry, you've reached the max amount of orders")
+        print(pizza_order)
         finished = True
         break
 

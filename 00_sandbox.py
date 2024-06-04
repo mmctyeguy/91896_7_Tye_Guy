@@ -1,27 +1,102 @@
+def pizza_counting():
+    pizza_counting.counter += 1
+    return pizza_counting.counter
+
+
+# counts amount of sides ordered
+def sides_counting():
+    sides_counting.counter += 1
+    return sides_counting.counter
+
+
+def sides_ordering(question, error):
+    response = input(question).lower()
+    if response == "xxx":
+        return response
+    elif response in sides_menu:
+        return response
+    else:
+        print(error)
+
+
+# checks if response is on the pizza menus
+def pizza_ordering(question, error):
+    pizza_menu = reg_menu + gourmet_menu
+    prices_list = reg_price + gourmet_price
+
+    def pizza_price():
+        pos = pizza_menu.index(response)
+        price = prices_list[pos]
+        return price
+
+    response = input(question).lower()
+
+    if response is None:
+        print(error)
+    elif response in pizza_menu:
+        pizza_order.append(response)
+        pizza_counting()
+        print("You have chosen a {}. You have {} item/s in your basket.".format(response,
+                                                                                pizza_counting.counter))
+        order_cost.append(pizza_price())
+        print("Your current total is ${}".format((sum(order_cost))))
+        return response
+    elif response == "xxx":
+        return response
+    elif response in sides_menu:
+        print("Sorry, that looks like it's "
+              "from our sides menu. Please "
+              "order a pizza first.")
+    else:
+        print(error)
+
+
+pizza_counting.counter = 0
+sides_counting.counter = 0
+
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
 reg_price = [10, 12, 12, 15, 15]
+gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
+gourmet_price = [16, 15, 19, 19, 22]
+sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
+sides_price = [14, 4, 4, 8, 9]
 
 pizza_order = []
 sides_order = []
+order_cost = []
 
-order_dict = {
-    "Pizza": pizza_order,
-    "Sides": sides_order
-}
-
-# goal - start off with a set order and using the lists calculate the price
-# then move to making it work for any order
+your_order_dict = {
+    "Pizzas": pizza_order,
+    "Sides": sides_order}
 
 
-chosen_pizza = "meatball"
-chosen_sides = "mozzarella sticks"
+# main routine here
+while True:
+    chosen_pizza = pizza_ordering("What pizza would you like?",
+                                  "Please choose from our menu,"
+                                  " or type 'xxx' to finish ordering "
+                                  "off the Pizza menu.")
 
-pizza_order.append(chosen_pizza)
-sides_order.append(chosen_sides)
+    if pizza_counting.counter <= 5:
+        if chosen_pizza == "xxx":
+            if pizza_counting.counter <= 0:
+                print("Sorry, you must order at least 1 pizza.")
+            else:
+                print(pizza_order)
+                finished = True
+                break
 
-val = reg_menu.index(chosen_pizza)
-for i, val in enumerate(reg_price):
-    price = reg_price[i]
-print(pizza_order, price)
+    elif pizza_counting.counter >= 5:
+        print("Sorry, you've reached the max amount of orders")
+        print(pizza_order)
+        finished = True
+        break
+
+while finished is True:
+    print("You've ordered {}".format(pizza_order))
+    print("Your total is ${}".format((sum(order_cost))))
+    finished = False
+
+
 
 

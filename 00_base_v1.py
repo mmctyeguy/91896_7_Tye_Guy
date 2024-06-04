@@ -187,7 +187,6 @@ while True:
     else:
         break
 
-# main routine here
 while True:
     chosen_pizza = pizza_ordering("What pizza would you like?", "Please choose from our menu, or type"
                                                                 " 'xxx' to finish ordering off "
