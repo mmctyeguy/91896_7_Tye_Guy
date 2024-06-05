@@ -129,7 +129,7 @@ def sides_ordering(question, error):
         print("You have chosen a {}. You have {} item/s in your basket.".format(response,
                                                                                 sides_counting.counter))
         sides_cost.append(sides())
-        print("Your current total is ${}".format((sum(sides_cost))))
+        print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
         return response
     else:
         print(error)
@@ -189,9 +189,9 @@ sides_cost = []
 
 # dict to organise order info
 your_order_dict = {
-    "Pizzas": pizza_order,
-    "Sides": sides_order,
-    "Cost": pizza_cost + sides_cost}
+    "Items": pizza_order + sides_order,
+    "Price": pizza_cost + sides_cost
+}
 
 
 # main routine here
@@ -231,12 +231,12 @@ while True:
             break
 
 while finished is True:
-    print("You've ordered {}".format(your_order_dict))
-    print("Your total is ${}".format((sum(sides_cost + pizza_cost))))
+    order_table = pd.DataFrame(your_order_dict)
+    print(order_table)
+    print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
     finished = False
 
 
-order_table = pd.DataFrame(your_order_dict)
-order_table.set_index('Pizza')
-print(order_table)
+
+
 
