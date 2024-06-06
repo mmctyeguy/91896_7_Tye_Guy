@@ -122,7 +122,7 @@ def sides_ordering(question, error):
 
     response = input(question).lower()
     if response == "xxx":
-        return response
+        return response  # can end even with no sides ordered
     elif response in sides_menu:
         sides_counting.counter += 1
         sides_order.append(response)
@@ -148,18 +148,21 @@ def pizza_ordering(question, error):
 
     response = input(question).lower()
 
-    if response is None:
-        print(error)
+    if response == "xxx":
+        if pizza_counting.counter == 0:
+            print("Sorry, you must order at least 1 pizza.")
+        else:
+            return response
     elif response in pizza_menu:
-        pizza_order.append(response)
         pizza_counting()
         print("You have chosen a {}. You have {} item/s in your basket.".format(response,
                                                                                 pizza_counting.counter))
         pizza_cost.append(pizza_price())
+        pizza_order.append(response)
         print("Your current total is ${}".format((sum(pizza_cost))))
         return response
-    elif response == "xxx":
-        return response
+    elif response is None:
+        print(error)
     elif response in sides_menu:
         print("Sorry, that looks like it's "
               "from our sides menu. Please "
@@ -186,12 +189,19 @@ sides_order = []
 pizza_cost = []
 sides_cost = []
 
+while True:
+    ordered_before = yes_no("Have you ordered with us before?")
+    if ordered_before == "no":
+        print(instructions())
 
-# dict to organise order info
-your_order_dict = {
-    "Items": pizza_order + sides_order,
-    "Price": pizza_cost + sides_cost
-}
+    elif ordered_before == "yes":
+        pass
+
+    show_menu = yes_no("Would you like to see the menu?")
+    if show_menu == "yes":
+        menu()
+    else:
+        break
 
 
 # main routine here
@@ -203,34 +213,34 @@ while True:
 
     if pizza_counting.counter <= 5:
         if chosen_pizza == "xxx":
-            if pizza_counting.counter <= 0:
-                print("Sorry, you must order at least 1 pizza.")
-            else:
-                print(pizza_order)
-                finished = True
-                break
+            print("You have ordered {}.".format(pizza_order))
+            print("Your total is ${}".format(sum(pizza_cost)))
+            break
 
     elif pizza_counting.counter >= 5:
         print("Sorry, you've reached the max amount of orders")
-        print(pizza_order)
-        finished = True
+        print("You have ordered {}.".format(pizza_order))
+        print("Your total is ${}".format(sum(pizza_cost)))
         break
 
 while True:
     chosen_sides = sides_ordering("What side would you like?", "Please choose from our menu or type "
                                                                "'xxx' to finish ordering.")
-    if sides_counting.counter <= 0:
-        if chosen_sides == "xxx":
-            print("You have chosen {} sides.".format(sides_counting.counter))
-            finished = True
-            break
-    elif sides_counting.counter >= 0:
-        if chosen_sides == "xxx":
-            print(sides_order)
-            finished = True
-            break
+    if chosen_sides == "xxx":
+        if sides_counting.counter >= 1:
+            print("You have ordered {}.".format(sides_order))
+        print("Your total is ${}".format(sum(sides_cost + pizza_cost)))
+        finished = True
+        break
 
 while finished is True:
+
+    # dict to organise order info
+    your_order_dict = {
+        "Items": pizza_order + sides_order,
+        "Price": pizza_cost + sides_cost
+    }
+
     order_table = pd.DataFrame(your_order_dict)
     print(order_table)
     print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
