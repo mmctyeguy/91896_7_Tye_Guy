@@ -188,6 +188,7 @@ pizza_order = []
 sides_order = []
 pizza_cost = []
 sides_cost = []
+extra_cost = []
 
 while True:
     ordered_before = yes_no("Have you ordered with us before?")
@@ -241,6 +242,7 @@ while finished is True:
         "Price": pizza_cost + sides_cost
     }
 
+    total_cost = sum(pizza_cost + sides_cost + extra_cost)
     order_table = pd.DataFrame(your_order_dict)
     print(order_table)
     print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
