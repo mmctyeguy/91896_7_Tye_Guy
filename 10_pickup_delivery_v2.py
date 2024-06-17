@@ -1,3 +1,15 @@
+def address_check():
+    while True:
+        address = input("\nWhere would you like the order delivered? ").lower()
+        number = any(map(str.isdigit, address))
+        string = any(map(str.isalpha, address))
+        if number is True and string is True:
+            print("Your order will be delivered to {}".format(address))
+            break
+        else:
+            print("Please enter a valid address")
+
+
 def order_collect():
     while True:
         response = input("How would you like to collect your order? Pickup, or delivery?").lower()
@@ -11,6 +23,9 @@ def order_collect():
             print("You have selected {}.".format(response))
             print("You will be asked for your address, and a $10 delivery charge will be"
                   " added to your order.")
+            extra_cost.append(10)
+            extra_reason.append("Delivery Charge")
+            address_check()
             return response
         else:
             print("Sorry, please choose pickup or delivery.")
@@ -54,13 +69,3 @@ while True:
     print(name)
     phone_no = num_check("What is your phone number?", "Please enter a phone number", int)
     print(phone_no)
-    if collect_method == "delivery":
-        extra_cost.append(10)
-        extra_reason.append("Delivery Charge")
-
-
-# plan
-# if pickup, go to ask name + phone number
-# if delivery, do that + ask address + add charge to order
-# calculate time for order (pickup i.e it will be ready in... delivery it will arrive in...)
-# use datetime?

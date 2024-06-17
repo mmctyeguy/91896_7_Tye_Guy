@@ -201,6 +201,7 @@ while True:
     show_menu = yes_no("Would you like to see the menu?")
     if show_menu == "yes":
         menu()
+        break
     else:
         break
 
