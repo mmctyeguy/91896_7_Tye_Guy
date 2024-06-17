@@ -171,6 +171,38 @@ def pizza_ordering(question, error):
         print(error)
 
 
+def address_check():
+    while True:
+        address = input("\nWhere would you like the order delivered? ").lower()
+        number = any(map(str.isdigit, address))
+        string = any(map(str.isalpha, address))
+        if number is True and string is True:
+            print("Your order will be delivered to {}".format(address))
+            break
+        else:
+            print("Please enter a valid address")
+
+
+def order_collect():
+    while True:
+        response = input("How would you like to collect your order? Pickup, or delivery?").lower()
+
+        if response == "pickup":
+            print("You have selected {}.".format(response))
+            print("Our address is 111 pizza street. Please collect your order in"
+                  " 30 minutes.")
+            return response
+        elif response == "delivery":
+            print("You have selected {}.".format(response))
+            print("You will be asked for your address, and a $10 delivery charge will be"
+                  " added to your order.")
+            extra_cost.append(10)
+            extra_reason.append("Delivery Charge")
+            address_check()
+            return response
+        else:
+            print("Sorry, please choose pickup or delivery.")
+
 # sets counters to 0 before loop
 pizza_counting.counter = 0
 sides_counting.counter = 0
@@ -189,6 +221,7 @@ sides_order = []
 pizza_cost = []
 sides_cost = []
 extra_cost = []
+extra_reason = []
 
 while True:
     ordered_before = yes_no("Have you ordered with us before?")
@@ -247,7 +280,14 @@ while finished is True:
     order_table = pd.DataFrame(your_order_dict)
     print(order_table)
     print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
-    finished = False
+
+    print("Thank you for ordering with us")
+    collect_method = order_collect()
+
+    name = not_blank("What is your name?")
+    print(name)
+    phone_no = num_check("What is your phone number?", "Please enter a phone number", int)
+    print(phone_no)
 
 
 
