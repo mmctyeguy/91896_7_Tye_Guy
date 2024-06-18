@@ -74,7 +74,6 @@ def num_check(question, error, num_type):
 
 # checks that the response is not blank
 def not_blank(question):
-
     while True:
         response = input(question)
 
@@ -203,6 +202,7 @@ def order_collect():
         else:
             print("Sorry, please choose pickup or delivery.")
 
+
 # sets counters to 0 before loop
 pizza_counting.counter = 0
 sides_counting.counter = 0
@@ -238,7 +238,6 @@ while True:
     else:
         break
 
-
 # main routine here
 while True:
     chosen_pizza = pizza_ordering("What pizza would you like?",
@@ -258,15 +257,31 @@ while True:
         print("Your total is ${}".format(sum(pizza_cost)))
         break
 
+change_order = yes_no("Would you like to make any changes?")
+if change_order == "yes":
+    add_remove = not_blank("Would you like to add or remove items")
+    print("")
+    if add_remove == "add":
+        if pizza_counting.counter >= 5:
+            print("Sorry, you've reached the max amount of orders")
+        else:
+            # put in thing here somehow to make it re ask the order question
+            pass
+    elif add_remove == "remove":
+        print("What item do you wish to remove?")
+        # same but for remove
+elif change_order == "no":
+    pass
+
 while True:
     chosen_sides = sides_ordering("What side would you like?", "Please choose from our menu or type "
                                                                "'xxx' to finish ordering.")
     if chosen_sides == "xxx":
         if sides_counting.counter >= 1:
             print("You have ordered {}.".format(sides_order))
-        print("Your total is ${}".format(sum(sides_cost + pizza_cost)))
-        finished = True
-        break
+            print("Your total is ${}".format(sum(sides_cost + pizza_cost)))
+            finished = True
+            break
 
 while finished is True:
 
@@ -281,15 +296,12 @@ while finished is True:
     print(order_table)
     print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
 
-    print("Thank you for ordering with us")
-    collect_method = order_collect()
+print("Thank you for ordering with us")
+collect_method = order_collect()
 
-    name = not_blank("What is your name?")
-    print(name)
-    phone_no = num_check("What is your phone number?", "Please enter a phone number", int)
-    print(phone_no)
-
-
-
-
+name = not_blank("What is your name?")
+print("{}.".format(name).capitalize())
+phone_no = num_check("What is your phone number?", "Please enter a phone number", int)
+print(phone_no)
+# check phone number is of a certain length (also don't remove the 0 that's weird
 
