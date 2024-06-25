@@ -159,6 +159,7 @@ def pizza_ordering(question, error):
         pizza_cost.append(pizza_price())
         pizza_order.append(response)
         print("Your current total is ${}".format((sum(pizza_cost))))
+        # this is where you need to ask the pan type
         return response
     elif response is None:
         print(error)
@@ -211,9 +212,11 @@ sides_counting.counter = 0
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
 reg_price = [10, 12, 12, 15, 15]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
-gourmet_price = [16, 15, 19, 19, 22]
+gourmet_price = [16, 16, 19.99, 19.99, 22]
 sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet"]
-sides_price = [14, 4, 4, 8, 9]
+sides_price = [14, 3.99, 3.99, 8, 9.99]
+type_list = ["regular", "gluten free", "deep pan", "shallow pan"]
+type_price = [0, 0.50, 1.50, 0.50]
 
 # lists to hold order into
 pizza_order = []
