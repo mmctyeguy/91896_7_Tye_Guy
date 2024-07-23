@@ -97,6 +97,10 @@ def menu():
     sides = pd.DataFrame(list(zip(sides_menu, sides_price)),
                          columns=['Add-Ons', 'Price'])
     print(tabulate(sides, showindex=False, headers=sides.columns))
+    print("\n")
+    bases = pd.DataFrame(list(zip(type_list, type_price)),
+                         columns=['Pizza Bases', 'Price'])
+    print(tabulate(bases, showindex=False, headers=bases.columns))
 
 
 # counts amount of pizzas ordered
@@ -127,7 +131,7 @@ def sides_ordering(question, error):
         sides_order.append(response)
         print(f"You have chosen a {response}. You have {sides_counting.counter} item(s) in your basket.")
         sides_cost.append(calculate_sides_price(response))
-        print(f"Your current total is ${sum(sides_cost + pizza_cost)}")
+        total_cost()
         return response
     else:
         print(error)
@@ -137,6 +141,20 @@ def sides_ordering(question, error):
 def pizza_ordering(question, error):
     pizza_menu = reg_menu + gourmet_menu
     prices_list = reg_price + gourmet_price
+
+    def base_select():
+        base_type = input("What kind of base would you like for your pizza?"
+                          "\n Please choose from Regular, Gluten free, Deep pan and Shallow pan")
+        if base_type in type_list:
+            pos = type_list.index(base_type)
+            price = type_price[pos]
+            extra_cost.append(price)
+            extra_reason.append(base_type)
+            print("You have selected a {}. This will cost ${}".format(base_type, price))
+            total_cost()
+            return base_type
+        elif base_type not in type_list:
+            print("Sorry, please select from the list.")
 
     # calc price of pizzas by indexing lists
     def calculate_pizza_price():
@@ -157,9 +175,10 @@ def pizza_ordering(question, error):
                                                                                 pizza_counting.counter))
         pizza_cost.append(calculate_pizza_price())
         pizza_order.append(response)
-        print("Your current total is ${}".format((sum(pizza_cost))))
-        # this is where you need to ask the pan type
+        total_cost()
+        base_select()
         return response
+
     elif response is None:
         print(error)
     elif response in sides_menu:
@@ -203,6 +222,10 @@ def order_collect():
             return response
         else:
             print("Sorry, please choose pickup or delivery.")
+
+
+def total_cost():
+    print(f"Your total is ${sum(pizza_cost + sides_cost + extra_cost)}")
 
 
 # sets counters to 0 before loop
@@ -252,13 +275,13 @@ while True:
     if pizza_counting.counter <= 5:
         if chosen_pizza == "xxx":
             print(f"You have ordered {', '.join(pizza_order)}.")
-            print(f"Your total is ${sum(pizza_cost)}")
+            total_cost()
             break
 
     elif pizza_counting.counter >= 5:
         print("Sorry, you've reached the maximum amount of orders")
         print(f"You have ordered {', '.join(pizza_order)}.")
-        print(f"Your total is ${sum(pizza_cost)}")
+        total_cost()
         break
 
 while True:
@@ -268,7 +291,7 @@ while True:
     if chosen_sides == "xxx":
         if sides_counting.counter >= 1:
             print(f"You have ordered {', '.join(sides_order)}.")
-            print(f"Your total is ${sum(sides_cost + pizza_cost)}")
+            total_cost()
             break
 
 # Editing the order
@@ -282,7 +305,7 @@ if change_order == "yes":
                                           "Please choose from our menu or type 'xxx' to finish ordering.")
             if chosen_sides == "xxx":
                 print(f"You have ordered {', '.join(sides_order)}.")
-                print(f"Your total is ${sum(sides_cost + pizza_cost)}")
+                total_cost()
                 break
 
     elif add_remove == "remove":
@@ -297,22 +320,14 @@ if change_order == "yes":
                 sides_cost.pop(sides_index)
                 sides_counting.counter -= 1
                 print(f"Removed {remove_item} from your order.")
-                print(f"Your current total is ${sum(sides_cost + pizza_cost)}")
+                total_cost()
+            elif remove_item == "xxx":
+                break
             else:
                 print("Sorry, that item is not in your order.")
 
 else:
     print("No changes will be made.")
-
-# Display final order
-print("Your final order details:")
-your_order_dict = {
-    "Items": pizza_order + sides_order,
-    "Price": pizza_cost + sides_cost
-}
-order_table = pd.DataFrame(your_order_dict)
-print(order_table)
-print(f"Your total is ${sum(pizza_cost + sides_cost)}")
 
 print("Thank you for ordering with us.")
 collect_method = order_collect()
@@ -322,3 +337,13 @@ print(f"{name.capitalize()}.")
 phone_no = num_check("What is your phone number?", "Please enter a valid phone number", int)
 print(phone_no)
 # Add validation for phone number length if needed
+
+# Display final order
+print("Your final order details:")
+your_order_dict = {
+    "Items": pizza_order + sides_order + extra_reason,
+    "Price": pizza_cost + sides_cost + extra_cost
+}
+order_table = pd.DataFrame(your_order_dict)
+print(order_table)
+total_cost()
