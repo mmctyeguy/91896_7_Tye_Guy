@@ -113,23 +113,21 @@ def sides_counting():
 
 # sides ordering function
 def sides_ordering(question, error):
-    # calc price of sides via index of lists
-    def sides():
-        pos = sides_menu.index(response)
+    # Function to calculate price of sides via index of lists
+    def calculate_sides_price(selected_side):
+        pos = sides_menu.index(selected_side)
         price = sides_price[pos]
         return price
 
     response = input(question).lower()
     if response == "xxx":
-        return response
-        # can end even with no sides ordered
+        return response  # Can end even with no sides ordered
     elif response in sides_menu:
-        sides_counting.counter += 1
+        sides_counting()
         sides_order.append(response)
-        print("You have chosen a {}. You have {} item/s in your basket.".format(response,
-                                                                                sides_counting.counter))
-        sides_cost.append(sides())
-        print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
+        print(f"You have chosen a {response}. You have {sides_counting.counter} item(s) in your basket.")
+        sides_cost.append(calculate_sides_price(response))
+        print(f"Your current total is ${sum(sides_cost + pizza_cost)}")
         return response
     else:
         print(error)
@@ -141,7 +139,7 @@ def pizza_ordering(question, error):
     prices_list = reg_price + gourmet_price
 
     # calc price of pizzas by indexing lists
-    def pizza_price():
+    def calculate_pizza_price():
         pos = pizza_menu.index(response)
         price = prices_list[pos]
         return price
@@ -157,7 +155,7 @@ def pizza_ordering(question, error):
         pizza_counting()
         print("You have chosen a {}. You have {} item/s in your basket.".format(response,
                                                                                 pizza_counting.counter))
-        pizza_cost.append(pizza_price())
+        pizza_cost.append(calculate_pizza_price())
         pizza_order.append(response)
         print("Your current total is ${}".format((sum(pizza_cost))))
         # this is where you need to ask the pan type
@@ -213,13 +211,13 @@ sides_counting.counter = 0
 
 # lists to hold menu info
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
-reg_price = [10, 12, 12, 15, 15]
+reg_price = [10.00, 12.00, 12.00, 15.00, 15.00]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
-gourmet_price = [16, 16, 19.99, 19.99, 22]
+gourmet_price = [16.00, 16.00, 19.99, 19.99, 22.00]
 sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet"]
-sides_price = [14, 3.99, 3.99, 8, 9.99]
+sides_price = [14.00, 3.99, 3.99, 8.00, 9.99]
 type_list = ["regular", "gluten free", "deep pan", "shallow pan"]
-type_price = [0, 0.50, 1.50, 0.50]
+type_price = [0.00, 0.50, 1.50, 0.50]
 
 # lists to hold order into
 pizza_order = []
@@ -229,13 +227,12 @@ sides_cost = []
 extra_cost = []
 extra_reason = []
 
-# main routine here
 
+# main routine here
 while True:
     ordered_before = yes_no("Have you ordered with us before?")
     if ordered_before == "no":
         print(instructions())
-
     elif ordered_before == "yes":
         pass
 
@@ -251,74 +248,44 @@ while True:
                                   "Please choose from our menu,"
                                   " or type 'xxx' to finish ordering "
                                   "off the Pizza menu.")
-    # item counting
 
     if pizza_counting.counter <= 5:
         if chosen_pizza == "xxx":
-            print("You have ordered {}.".format(pizza_order))
-            print("Your total is ${}".format(sum(pizza_cost)))
+            print(f"You have ordered {', '.join(pizza_order)}.")
+            print(f"Your total is ${sum(pizza_cost)}")
             break
 
     elif pizza_counting.counter >= 5:
-        print("Sorry, you've reached the max amount of orders")
-        print("You have ordered {}.".format(pizza_order))
-        print("Your total is ${}".format(sum(pizza_cost)))
+        print("Sorry, you've reached the maximum amount of orders")
+        print(f"You have ordered {', '.join(pizza_order)}.")
+        print(f"Your total is ${sum(pizza_cost)}")
         break
 
 while True:
-    chosen_sides = sides_ordering("What side would you like?", "Please choose from our menu or type "
-                                                               "'xxx' to finish ordering.")
+    chosen_sides = sides_ordering("What side would you like?",
+                                  "Please choose from our menu or type 'xxx' to finish ordering.")
+
     if chosen_sides == "xxx":
         if sides_counting.counter >= 1:
-            print("You have ordered {}.".format(sides_order))
-            print("Your total is ${}".format(sum(sides_cost + pizza_cost)))
+            print(f"You have ordered {', '.join(sides_order)}.")
+            print(f"Your total is ${sum(sides_cost + pizza_cost)}")
             break
 
-# editing the order
-
+# Editing the order
 change_order = yes_no("Would you like to make any changes?")
 if change_order == "yes":
     add_remove = not_blank("Would you like to add or remove items?")
     print("")
     if add_remove == "add":
         while True:
-            chosen_pizza = pizza_ordering("What pizza would you like to add?",
-                                          "Please choose from our menu,"
-                                          " or type 'xxx' to finish ordering "
-                                          "off the Pizza menu.")
-
-            if chosen_pizza == "xxx":
-                print("You have ordered {}.".format(pizza_order))
-                print("Your total is ${}".format(sum(pizza_cost)))
-                break
-        # asks what pizza user wants to add and reruns pizza ordering function
-        while True:
             chosen_sides = sides_ordering("What side would you like to add?",
                                           "Please choose from our menu or type 'xxx' to finish ordering.")
             if chosen_sides == "xxx":
-                print("You have ordered {}.".format(sides_order))
-                print("Your total is ${}".format(sum(sides_cost)))
+                print(f"You have ordered {', '.join(sides_order)}.")
+                print(f"Your total is ${sum(sides_cost + pizza_cost)}")
                 break
-        # asks what sides user wants to add and reruns side ordering function
 
     elif add_remove == "remove":
-        while True:
-            print("Your current pizza order:")
-            print("\n".join(pizza_order))
-            remove_item = input("What pizza would you like to remove? ").lower()
-
-            if remove_item in pizza_order:
-                pizza_index = pizza_order.index(remove_item)
-                pizza_order.pop(pizza_index)
-                pizza_cost.pop(pizza_index)
-                pizza_counting.counter -= 1
-                print("Removed {} from your order.".format(remove_item))
-                print("Your current total is ${}".format(sum(pizza_cost)))
-            else:
-                print("Sorry, that item is not in your order.")
-        # asks what pizza user would like to remove and removes it
-        # if it is in their order, if not, prints an error
-
         while True:
             print("Your current sides order:")
             print("\n".join(sides_order))
@@ -329,36 +296,29 @@ if change_order == "yes":
                 sides_order.pop(sides_index)
                 sides_cost.pop(sides_index)
                 sides_counting.counter -= 1
-                print("Removed {} from your order.".format(remove_item))
-                print("Your current total is ${}".format(sum(sides_cost)))
+                print(f"Removed {remove_item} from your order.")
+                print(f"Your current total is ${sum(sides_cost + pizza_cost)}")
             else:
                 print("Sorry, that item is not in your order.")
-
-        # asks what side user would like to remove from their order and removes it
-        # if it is in their order, if not, prints an error
 
 else:
     print("No changes will be made.")
 
-while finished is True:
+# Display final order
+print("Your final order details:")
+your_order_dict = {
+    "Items": pizza_order + sides_order,
+    "Price": pizza_cost + sides_cost
+}
+order_table = pd.DataFrame(your_order_dict)
+print(order_table)
+print(f"Your total is ${sum(pizza_cost + sides_cost)}")
 
-    # dict to organise order info
-    your_order_dict = {
-        "Items": pizza_order + sides_order,
-        "Price": pizza_cost + sides_cost
-    }
-
-    total_cost = sum(pizza_cost + sides_cost + extra_cost)
-    order_table = pd.DataFrame(your_order_dict)
-    print(order_table)
-    print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
-
-print("Thank you for ordering with us")
+print("Thank you for ordering with us.")
 collect_method = order_collect()
 
 name = not_blank("What is your name?")
-print("{}.".format(name).capitalize())
-phone_no = num_check("What is your phone number?", "Please enter a phone number", int)
+print(f"{name.capitalize()}.")
+phone_no = num_check("What is your phone number?", "Please enter a valid phone number", int)
 print(phone_no)
-# check phone number is of a certain length (also don't remove the 0 that's weird
-
+# Add validation for phone number length if needed
