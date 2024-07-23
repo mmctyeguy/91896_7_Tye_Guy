@@ -250,7 +250,6 @@ sides_cost = []
 extra_cost = []
 extra_reason = []
 
-
 # main routine here
 while True:
     ordered_before = yes_no("Have you ordered with us before?")
@@ -301,30 +300,63 @@ if change_order == "yes":
     print("")
     if add_remove == "add":
         while True:
-            chosen_sides = sides_ordering("What side would you like to add?",
-                                          "Please choose from our menu or type 'xxx' to finish ordering.")
-            if chosen_sides == "xxx":
-                print(f"You have ordered {', '.join(sides_order)}.")
-                total_cost()
+            which_ordering = input("Would you like to edit your sides order, or your pizza order?")
+            if which_ordering == "sides":
+                chosen_sides = sides_ordering("What side would you like to add?",
+                                              "Please choose from our menu or type 'xxx' to finish ordering.")
+                if chosen_sides == "xxx":
+                    print(f"You have ordered {', '.join(sides_order)}.")
+                    total_cost()
+                    break
+            elif which_ordering == "pizza":
+                chosen_pizza = pizza_ordering("Please choose from our menu,"
+                                              " or type 'xxx' to finish ordering "
+                                              "off the Pizza menu.",
+                                              "Please choose from our menu"
+                                              " or type 'xxx' to finish ordering")
+                if chosen_pizza == "xxx":
+                    print(f"You have ordered {', '.join(pizza_order)}.")
+                    total_cost()
+            elif which_ordering == "xxx":
                 break
 
     elif add_remove == "remove":
         while True:
-            print("Your current sides order:")
-            print("\n".join(sides_order))
-            remove_item = input("What side would you like to remove? ").lower()
+            which_editing = input("Which order would you like to edit? Pizza, or sides?")
+            if which_editing == "sides":
+                print("Your current sides order:")
+                print("\n".join(sides_order))
+                remove_item = input("What side would you like to remove? ").lower()
 
-            if remove_item in sides_order:
-                sides_index = sides_order.index(remove_item)
-                sides_order.pop(sides_index)
-                sides_cost.pop(sides_index)
-                sides_counting.counter -= 1
-                print(f"Removed {remove_item} from your order.")
-                total_cost()
-            elif remove_item == "xxx":
+                if remove_item in sides_order:
+                    sides_index = sides_order.index(remove_item)
+                    sides_order.pop(sides_index)
+                    sides_cost.pop(sides_index)
+                    sides_counting.counter -= 1
+                    print(f"Removed {remove_item} from your order.")
+                    total_cost()
+                elif remove_item == "xxx":
+                    break
+                else:
+                    print("Sorry, that item is not in your order.")
+            elif which_editing == "pizza":
+                print("Your current pizza order:")
+                print("\n".join(pizza_order))
+                remove_item = input("Which pizza would you like to remove? ").lower()
+
+                if remove_item in pizza_order:
+                    pizza_index = pizza_order.index(remove_item)
+                    pizza_order.pop(pizza_index)
+                    pizza_cost.pop(pizza_index)
+                    pizza_counting.counter -= 1
+                    print(f"Removed {remove_item} from your order.")
+                    total_cost()
+                elif remove_item == "xxx":
+                    break
+                else:
+                    print("Sorry, that item is not in your order.")
+            elif which_editing == "xxx":
                 break
-            else:
-                print("Sorry, that item is not in your order.")
 
 else:
     print("No changes will be made.")
