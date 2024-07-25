@@ -224,8 +224,21 @@ def order_collect():
             print("Sorry, please choose pickup or delivery.")
 
 
+# Define the currency formatting function
+def currency(x):
+    return "${:.2f}".format(x)
+
+
+# Define the total_cost function
 def total_cost():
-    print(f"Your total is ${sum(pizza_cost + sides_cost + extra_cost)}")
+    # Calculate the total cost by summing up the elements of the lists
+    total = sum(pizza_cost) + sum(sides_cost) + sum(extra_cost)
+
+    # Format the total using the currency function
+    formatted_total = currency(total)
+
+    # Print the formatted total
+    print(f"Your total is {formatted_total}")
 
 
 # sets counters to 0 before loop
@@ -345,12 +358,16 @@ if change_order == "yes":
                 remove_item = input("Which pizza would you like to remove? ").lower()
 
                 if remove_item in pizza_order:
-                    pizza_index = pizza_order.index(remove_item)
-                    pizza_order.pop(pizza_index)
-                    pizza_cost.pop(pizza_index)
-                    pizza_counting.counter -= 1
-                    print(f"Removed {remove_item} from your order.")
-                    total_cost()
+                    if pizza_counting.counter <= 1:
+                        print("Sorry, you must order at least one pizza to"
+                              " continue.")
+                    elif pizza_counting.counter >= 1:
+                        pizza_index = pizza_order.index(remove_item)
+                        pizza_order.pop(pizza_index)
+                        pizza_cost.pop(pizza_index)
+                        pizza_counting.counter -= 1
+                        print(f"Removed {remove_item} from your order.")
+                        total_cost()
                 elif remove_item == "xxx":
                     break
                 else:
