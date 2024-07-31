@@ -67,5 +67,3 @@ while True:
 
     name = not_blank("What is your name?")
     print(name)
-    phone_no = num_check("What is your phone number?", "Please enter a phone number", int)
-    print(phone_no)

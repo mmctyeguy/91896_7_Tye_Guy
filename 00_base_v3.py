@@ -101,6 +101,7 @@ def menu():
     bases = pd.DataFrame(list(zip(type_list, type_price)),
                          columns=['Pizza Bases', 'Price'])
     print(tabulate(bases, showindex=False, headers=bases.columns))
+    print("\n")
 
 
 # counts amount of pizzas ordered
@@ -247,11 +248,11 @@ sides_counting.counter = 0
 
 # lists to hold menu info
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
-reg_price = [10.00, 12.00, 12.00, 15.00, 15.00]
+reg_price = [9.99, 11.99, 11.99, 14.99, 14.99]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
-gourmet_price = [16.00, 16.00, 19.99, 19.99, 22.00]
-sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet"]
-sides_price = [14.00, 3.99, 3.99, 8.00, 9.99]
+gourmet_price = [15.99, 15.99, 19.99, 19.99, 21.99]
+sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet", "chips"]
+sides_price = [13.99, 3.99, 3.99, 7.99, 9.99, 5.99]
 type_list = ["regular", "gluten free", "deep pan", "shallow pan"]
 type_price = [0.00, 0.50, 1.50, 0.50]
 
@@ -385,7 +386,8 @@ name = not_blank("What is your name?")
 print(f"{name.capitalize()}.")
 phone_no = num_check("What is your phone number?", "Please enter a valid phone number", int)
 print(phone_no)
-# Add validation for phone number length if needed
+
+# add in the cash credit function
 
 # Display final order
 print("Your final order details:")
