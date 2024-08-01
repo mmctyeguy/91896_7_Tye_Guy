@@ -304,8 +304,9 @@ while True:
     if chosen_sides == "xxx":
         if sides_counting.counter >= 1:
             print(f"You have ordered {', '.join(sides_order)}.")
-            total_cost()
-            break
+    total_cost()
+    break
+
 
 # Editing the order
 change_order = yes_no("Would you like to make any changes?")

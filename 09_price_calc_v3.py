@@ -67,11 +67,11 @@ pizza_counting.counter = 0
 sides_counting.counter = 0
 
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
-reg_price = [10, 12, 12, 15, 15]
+reg_price = [9.99, 11.99, 11.99, 14.99, 14.99]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
-gourmet_price = [16, 15, 19, 19, 22]
+gourmet_price = [15.99, 15.99, 19.99, 21.99, 19.99]
 sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
-sides_price = [14, 4, 4, 8, 9]
+sides_price = [13.99, 3.99, 3.99, 7.99, 9.99]
 
 pizza_order = []
 sides_order = []

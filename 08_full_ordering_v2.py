@@ -60,8 +60,8 @@ reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
 reg_price = [10, 12, 12, 15, 15]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
 gourmet_price = [16, 15, 19, 19, 22]
-sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
-sides_price = [14, 4, 4, 8, 9]
+sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet", "chips"]
+sides_price = [14, 4, 4, 8, 9, 5]
 
 pizza_order = []
 sides_order = []
@@ -116,3 +116,4 @@ while True:
         sides_order.append(chosen_sides)
         sides_counting()
         print("You have chosen a {}. You have {} item/s in your basket.".format(chosen_sides, sides_counting.counter))
+mga
