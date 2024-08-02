@@ -197,7 +197,7 @@ def address_check():
         number = any(map(str.isdigit, address))
         string = any(map(str.isalpha, address))
         if number is True and string is True:
-            print("Your order will be delivered to {}".format(address))
+            print("Your order will be delivered to {}.".format(address))
             break
         else:
             print("Please enter a valid address")
@@ -240,6 +240,15 @@ def total_cost():
 
     # Print the formatted total
     print(f"Your total is {formatted_total}")
+
+
+def confirm_order():
+    confirm = yes_no("Do you want to confirm your order?")
+    if confirm == 'no':
+        print("Order cancelled.")
+        # Logic to allow user to make changes or restart
+    elif confirm == 'yes':
+        print("Order confirmed.")
 
 
 # sets counters to 0 before loop
@@ -399,3 +408,5 @@ your_order_dict = {
 order_table = pd.DataFrame(your_order_dict)
 print(order_table)
 total_cost()
+
+confirm_order()
