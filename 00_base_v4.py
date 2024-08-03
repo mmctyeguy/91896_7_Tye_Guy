@@ -196,6 +196,19 @@ def order_collect():
             print("Sorry, please choose pickup or delivery.")
 
 
+def write_order_to_file():
+    filename = f"{name.lower()}_order.txt"
+    with open(filename, 'w') as file:
+        file.write("**** Order Summary ****\n\n")
+        file.write("Items Ordered:\n")
+        for item, price in zip(pizza_order + sides_order + extra_reason, pizza_cost + sides_cost + extra_cost):
+            file.write(f"{item.capitalize()}: ${price:.2f}\n")
+        file.write("\n")
+        total = processor.total_cost()
+        file.write(f"Total Cost: ${total:.2f}\n")
+    print(f"Order details have been saved to {filename}.")
+
+
 class PaymentProcessor:
     def __init__(self):
         self.payment_method = None
@@ -319,62 +332,82 @@ sides_counting.counter = 0
 
 # Main Routine
 
-processor = PaymentProcessor()
-manager = OrderManager()
-
 while True:
-    ordered_before = yes_no("Have you ordered with us before? (yes/no) ")
-    if ordered_before == "no":
-        instructions()
+    processor = PaymentProcessor()
+    manager = OrderManager()
 
-    show_menu = yes_no("Would you like to see the menu? (yes/no) ")
-    if show_menu == "yes":
-        menu()
+    while True:
+        ordered_before = yes_no("Have you ordered with us before? (yes/no) ")
+        if ordered_before == "no":
+            instructions()
 
-    break
+        show_menu = yes_no("Would you like to see the menu? (yes/no) ")
+        if show_menu == "yes":
+            menu()
 
-while True:
-    chosen_pizza = pizza_ordering("What pizza would you like to order? (or type 'xxx' to finish) ",
-                                  "Please choose from our menu, or type 'xxx' to finish ordering.")
-
-    if chosen_pizza == "xxx" and pizza_counting.counter > 0:
-        print(f"You have ordered {', '.join(pizza_order)}.")
-        processor.total_cost()
-        break
-    elif pizza_counting.counter >= 5:
-        print("Sorry, you've reached the maximum amount of orders")
-        print(f"You have ordered {', '.join(pizza_order)}.")
-        processor.total_cost()
         break
 
-while True:
-    chosen_sides = sides_ordering("What side would you like to order? (or type 'xxx' to finish) ",
-                                  "Please choose from our menu or type 'xxx' to finish ordering.")
+    while True:
+        chosen_pizza = pizza_ordering("What pizza would you like to order? (or type 'xxx' to finish) ",
+                                      "Please choose from our menu, or type 'xxx' to finish ordering.")
 
-    if chosen_sides == "xxx":
-        if sides_counting.counter > 0:
-            print(f"You have ordered {', '.join(sides_order)}.")
+        if chosen_pizza == "xxx" and pizza_counting.counter > 0:
+            print(f"You have ordered {', '.join(pizza_order)}.")
+            processor.total_cost()
+            break
+        elif pizza_counting.counter >= 5:
+            print("Sorry, you've reached the maximum amount of orders")
+            print(f"You have ordered {', '.join(pizza_order)}.")
+            processor.total_cost()
+            break
+
+    while True:
+        chosen_sides = sides_ordering("What side would you like to order? (or type 'xxx' to finish) ",
+                                      "Please choose from our menu or type 'xxx' to finish ordering.")
+
+        if chosen_sides == "xxx":
+            if sides_counting.counter > 0:
+                print(f"You have ordered {', '.join(sides_order)}.")
+            break
+
+    manager.edit_order()
+    print("Thank you for ordering with us.")
+    collect_method = order_collect()
+
+    name = not_blank("What is your name? ")
+    print(f"Name: {name.capitalize()}")
+    phone_no = num_check("What is your phone number? ", "Please enter a valid phone number", int)
+    print(f"Phone Number: {phone_no}")
+
+    processor.total_cost()
+    processor.payment_type()
+    confirm_order()
+
+    # Display final order
+    print("Your final order details:")
+    your_order_dict = {
+        "Items": pizza_order + sides_order + extra_reason,
+        "Price": pizza_cost + sides_cost + extra_cost
+    }
+    processor.total_cost()
+    order_table = pd.DataFrame(your_order_dict)
+    print(order_table)
+
+    # Write order to file
+    write_order_to_file()
+
+    # Ask if the user wants to make another order
+    new_order = yes_no("Would you like to make another order? (yes/no) ")
+    if new_order == "no":
+        print("Thank you for visiting Pizza Place! Have a great day!")
         break
-
-manager.edit_order()
-print("Thank you for ordering with us.")
-collect_method = order_collect()
-
-name = not_blank("What is your name? ")
-print(f"Name: {name.capitalize()}")
-phone_no = num_check("What is your phone number? ", "Please enter a valid phone number", int)
-print(f"Phone Number: {phone_no}")
-
-processor.total_cost()
-processor.payment_type()
-confirm_order()
-
-# Display final order
-print("Your final order details:")
-your_order_dict = {
-    "Items": pizza_order + sides_order + extra_reason,
-    "Price": pizza_cost + sides_cost + extra_cost
-}
-processor.total_cost()
-order_table = pd.DataFrame(your_order_dict)
-print(order_table)
+    else:
+        # Reset variables for a new order
+        pizza_order.clear()
+        sides_order.clear()
+        pizza_cost.clear()
+        sides_cost.clear()
+        extra_cost.clear()
+        extra_reason.clear()
+        pizza_counting.counter = 0
+        sides_counting.counter = 0
