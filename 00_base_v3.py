@@ -225,22 +225,34 @@ def order_collect():
             print("Sorry, please choose pickup or delivery.")
 
 
+def payment_type():
+    payment_method = input("Please select your payment method. Cash or credit? (ca/cr) ")
+    if payment_method in ["cash", "ca"]:
+        print("You have selected cash as your payment type.")
+        return "cash"
+    elif payment_method in ["credit", "cr"]:
+        print("You have selected credit as your payment type.\n"
+              "Please be aware that there is a 15% surcharge for credit.")
+        extra_reason.append("credit surcharge")
+        return "credit"
+    else:
+        print("Invalid selection. Please choose 'cash' or 'credit'.")
+        return payment_type()  # Recursive call for a valid input
+
+
 # Define the currency formatting function
-def currency(x):
-    return "${:.2f}".format(x)
-
-
-# Define the total_cost function
 def total_cost():
-    # Calculate the total cost by summing up the elements of the lists
+    # Calculate the sum of lists
     total = sum(pizza_cost) + sum(sides_cost) + sum(extra_cost)
 
-    # Format the total using the currency function
-    formatted_total = currency(total)
+    # Apply surcharge if payment method is credit
+    if payment_method == "credit":
+        surcharge = total * 0.15
+        total += surcharge
 
-    # Print the formatted total
-    print(f"Your total is {formatted_total}")
-
+    print(f"Your total is {total:.2f}")
+    return total
+# going to test class usage - make 4th base for testing.
 
 def confirm_order():
     confirm = yes_no("Do you want to confirm your order?")
