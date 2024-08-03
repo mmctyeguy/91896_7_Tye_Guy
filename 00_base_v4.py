@@ -99,6 +99,11 @@ def sides_counting():
     return sides_counting.counter
 
 
+def order_counting():
+    order_counting.counter += 1
+    return order_counting.counter
+
+
 def sides_ordering(question, error):
     def calculate_sides_price(selected_side):
         return sides_price[sides_menu.index(selected_side)]
@@ -132,6 +137,7 @@ def pizza_ordering(question, error):
             return base_type
         else:
             print("Sorry, please select from the list.")
+            # bug here for some reason you can skip base selection...
 
     def calculate_pizza_price():
         return prices_list[pizza_menu.index(response)]
@@ -196,8 +202,8 @@ def order_collect():
             print("Sorry, please choose pickup or delivery.")
 
 
-def write_order_to_file():
-    filename = f"{name.lower()}_order.txt"
+def write_order_to_file(name, order_number):
+    filename = f"{name.lower()}_order_{order_number}.txt"
     with open(filename, 'w') as file:
         file.write("**** Order Summary ****\n\n")
         file.write("Items Ordered:\n")
@@ -308,6 +314,14 @@ class OrderManager:
         print(f"{item} has been removed.")
         self.processor.total_cost()
 
+    def finalize_order(self):
+        name = not_blank("Please enter your name: ")
+        order_counting()
+        order_number = order_counting.counter
+        write_order_to_file(name, order_number)
+        self.processor.payment_type()
+        confirm_order()
+
 
 # Global Variables
 
@@ -329,6 +343,7 @@ extra_reason = []
 
 pizza_counting.counter = 0
 sides_counting.counter = 0
+order_counting.counter = 0  # Track order counts to avoid overwriting files
 
 # Main Routine
 
@@ -374,14 +389,12 @@ while True:
     print("Thank you for ordering with us.")
     collect_method = order_collect()
 
-    name = not_blank("What is your name? ")
-    print(f"Name: {name.capitalize()}")
+    processor.total_cost()
+
     phone_no = num_check("What is your phone number? ", "Please enter a valid phone number", int)
     print(f"Phone Number: {phone_no}")
 
-    processor.total_cost()
-    processor.payment_type()
-    confirm_order()
+    manager.finalize_order()
 
     # Display final order
     print("Your final order details:")
@@ -389,12 +402,10 @@ while True:
         "Items": pizza_order + sides_order + extra_reason,
         "Price": pizza_cost + sides_cost + extra_cost
     }
+
     processor.total_cost()
     order_table = pd.DataFrame(your_order_dict)
     print(order_table)
-
-    # Write order to file
-    write_order_to_file()
 
     # Ask if the user wants to make another order
     new_order = yes_no("Would you like to make another order? (yes/no) ")
