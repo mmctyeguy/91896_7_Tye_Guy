@@ -313,6 +313,10 @@ class OrderManager:
             if item in sides_order:
                 self.remove_from_order(item, sides_order, sides_cost)
                 sides_counting.counter -= 1
+            elif item == "xxx":
+                pass
+            else:
+                print("Sorry, that item isn't in your order.")
 
     def remove_from_order(self, item, order_list, cost_list):
         index = order_list.index(item)
@@ -399,7 +403,7 @@ while True:
     processor.total_cost()
 
     phone_no = num_check("What is your phone number? ", "Please enter a valid phone number", int)
-    print(f"Phone Number: {phone_no}")
+    print(f"Phone Number: 0{phone_no}")
 
     manager.finalize_order()
 
