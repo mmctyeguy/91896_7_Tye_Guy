@@ -127,17 +127,18 @@ def pizza_ordering(question, error):
     prices_list = reg_price + gourmet_price
 
     def base_select():
-        base_type = input("What kind of base would you like for your pizza?"
-                          "\n (Regular, Gluten free, Deep pan, Shallow pan) ")
-        if base_type in type_list:
-            price = type_price[type_list.index(base_type)]
-            extra_cost.append(price)
-            extra_reason.append(base_type)
-            print(f"You have selected a {base_type}. This will cost ${price:.2f}")
-            return base_type
-        else:
-            print("Sorry, please select from the list.")
-            # bug here for some reason you can skip base selection...
+        while True:
+            base_type = input("What kind of base would you like for your pizza?"
+                              "\n (Regular, Gluten free, Deep pan, Shallow pan) ")
+            if base_type in type_list:
+                price = type_price[type_list.index(base_type)]
+                extra_cost.append(price)
+                extra_reason.append(base_type)
+                print(f"You have selected {base_type}. This will cost ${price:.2f}")
+                return base_type
+            else:
+                print("Sorry, please select from the list.")
+                # bug here for some reason you can skip base selection...
 
     def calculate_pizza_price():
         return prices_list[pizza_menu.index(response)]
@@ -164,7 +165,7 @@ def pizza_ordering(question, error):
 
 def confirm_order():
     while True:
-        confirm = yes_no("Would you like to confirm your  order? (yes/no) ")
+        confirm = yes_no("Would you like to confirm your order? (yes/no) ")
         if confirm == 'no':
             print("Your order has been cancelled.")
             exit()  # Exit the program if the user cancels the order
@@ -205,7 +206,7 @@ def order_collect():
 def write_order_to_file(name, order_number):
     filename = f"{name.lower()}_order_{order_number}.txt"
     with open(filename, 'w') as file:
-        file.write("**** Order Summary ****\n\n")
+        file.write("**** Order Summary for {} ****\n\n".format(name))
         file.write("Items Ordered:\n")
         for item, price in zip(pizza_order + sides_order + extra_reason, pizza_cost + sides_cost + extra_cost):
             file.write(f"{item.capitalize()}: ${price:.2f}\n")
