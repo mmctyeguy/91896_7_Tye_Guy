@@ -30,11 +30,12 @@ def menu():
 
 # lists to hold menu items
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
-reg_price = [10, 12.50, 12.50, 15, 15]
+reg_price = [9.99, 11.99, 11.99, 14.99, 14.99]
 gourmet_menu = ["americano", "margherita", "supreme", "capricciosa", "shrimp"]
-gourmet_price = [16, 15, 19.99, 19.99, 22]
-sides_menu = ["mozzarella sticks", "L&P", "pepsi", "garlic bread", "sorbet"]
-sides_price = [14.50, 4.99, 4.99, 8, 9.99]
+gourmet_price = [15.99, 15.99, 19.99, 19.99, 21.99]
+sides_menu = ["mozzarella sticks", "l&p", "pepsi", "garlic bread", "sorbet", "chips"]
+sides_price = [13.99, 3.99, 3.99, 7.99, 9.99, 5.99]
+
 
 # main routine begins
 show_menu = yes_no("Would you like to see the menu?")
