@@ -283,7 +283,9 @@ class OrderManager:
             else:
                 print("Invalid category. Please enter 'pizza' or 'sides'.")
 
-    def add_item(self, category):
+    @staticmethod
+    # because it's only called in the class and doesn't need access to anything else
+    def add_item(category):
         if category == 'pizza':
             pizza_ordering("What pizza would you like to add? ", "Please choose from our menu.")
         elif category == 'sides':
