@@ -302,6 +302,10 @@ class OrderManager:
                     pizza_counting.counter -= 1
                 elif pizza_counting.counter <= 1:
                     print("Sorry, you must order at least 1 pizza.")
+            elif item == "xxx":
+                pass
+            else:
+                print("Sorry, that item isn't in your order.")
         elif category == 'sides':
             print("Your current sides order:")
             print("\n".join(sides_order))
