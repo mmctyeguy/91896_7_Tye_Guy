@@ -194,8 +194,8 @@ def order_collect():
             return response
         elif response == "delivery":
             print(f"You have selected {response}.")
-            print("You will be asked for your address, and a $10 delivery charge will be added to your order.")
-            extra_cost.append(10)
+            print("You will be asked for your address, and a $5 delivery charge will be added to your order.")
+            extra_cost.append(5)
             extra_reason.append("Delivery Charge")
             address_check()
             return response
@@ -326,7 +326,7 @@ class OrderManager:
         self.processor.total_cost()
 
     def finalize_order(self):
-        name = not_blank("Please enter your name: ")
+        name = not_blank("Please enter your name: ".capitalize())
         order_counting()
         order_number = order_counting.counter
         write_order_to_file(name, order_number)
@@ -416,6 +416,7 @@ while True:
 
     processor.total_cost()
     order_table = pd.DataFrame(your_order_dict)
+    order_table.index = order_table.index + 1
     print(order_table)
 
     # Ask if the user wants to make another order
