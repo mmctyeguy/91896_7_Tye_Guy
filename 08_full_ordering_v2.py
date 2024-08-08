@@ -1,5 +1,4 @@
 import pandas as pd
-from tabulate import tabulate
 
 
 # counts amount of pizzas ordered
@@ -116,4 +115,3 @@ while True:
         sides_order.append(chosen_sides)
         sides_counting()
         print("You have chosen a {}. You have {} item/s in your basket.".format(chosen_sides, sides_counting.counter))
-mga
