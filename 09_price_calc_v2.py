@@ -15,7 +15,7 @@ def pizza_ordering(question, error):
         pizza_counting()
         print("You have chosen a {}. You have {} item/s in your basket.".format(response,
                                                                                 pizza_counting.counter))
-        order_cost.append(get_price())
+        order_cost.append(get_price(response))
         print("Your current total is ${}".format((sum(order_cost))))
         return response
     elif response == "xxx":
@@ -28,8 +28,8 @@ def pizza_ordering(question, error):
         print(error)
 
 
-def get_price():
-    pos = reg_menu.index()
+def get_price(response):
+    pos = reg_menu.index(response)
     price = reg_price[pos]
     return price
 

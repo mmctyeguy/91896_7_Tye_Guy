@@ -138,7 +138,6 @@ def pizza_ordering(question, error):
                 return base_type
             else:
                 print("Sorry, please select from the list.")
-                # bug here for some reason you can skip base selection...
 
     def calculate_pizza_price():
         return prices_list[pizza_menu.index(response)]
@@ -284,7 +283,6 @@ class OrderManager:
                 print("Invalid category. Please enter 'pizza' or 'sides'.")
 
     @staticmethod
-    # because it's only called in the class and doesn't need access to anything else
     def add_item(category):
         if category == 'pizza':
             pizza_ordering("What pizza would you like to add? ", "Please choose from our menu.")

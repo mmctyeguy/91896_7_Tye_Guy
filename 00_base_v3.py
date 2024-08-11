@@ -245,14 +245,10 @@ def total_cost():
     # Calculate the sum of lists
     total = sum(pizza_cost) + sum(sides_cost) + sum(extra_cost)
 
-    # Apply surcharge if payment method is credit
-    if payment_method == "credit":
-        surcharge = total * 0.15
-        total += surcharge
-
     print(f"Your total is {total:.2f}")
     return total
 # going to test class usage - make 4th base for testing.
+
 
 def confirm_order():
     confirm = yes_no("Do you want to confirm your order?")
