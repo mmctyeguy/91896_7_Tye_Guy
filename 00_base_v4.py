@@ -4,21 +4,15 @@ from tabulate import tabulate
 # Functions
 
 
-# Generalized function to check that an input is within a set of valid options
-def get_valid_input(question, valid_responses, error_message="Please enter a valid response"):
+def yes_no(question):
     while True:
         response = input(question).lower()
-        if response in valid_responses:
-            return response
-        elif response == "menu":
-            menu()
+        if response in ["yes", "y"]:
+            return "yes"
+        elif response in ["no", "n"]:
+            return "no"
         else:
-            print(error_message)
-
-
-# Replacing yes_no, cash_credit, and confirm_cancel with get_valid_input
-def yes_no(question):
-    return get_valid_input(question, ["yes", "y", "no", "n"], "Please enter yes or no")
+            print("Please answer 'yes' or 'no'.")
 
 
 def instructions():
@@ -398,6 +392,11 @@ while True:
         if chosen_sides == "xxx":
             if sides_counting.counter > 0:
                 print(f"You have ordered {', '.join(sides_order)}.")
+            break
+        elif sides_counting.counter >= 5:
+            print("Sorry, you've reached the maximum amount of orders")
+            print(f"You have ordered {', '.join(sides_order)}.")
+            processor.total_cost()
             break
 
     manager.edit_order()
