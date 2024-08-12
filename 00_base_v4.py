@@ -4,15 +4,21 @@ from tabulate import tabulate
 # Functions
 
 
-def yes_no(question):
+# Generalized function to check that an input is within a set of valid options
+def get_valid_input(question, valid_responses, error_message="Please enter a valid response"):
     while True:
         response = input(question).lower()
-        if response in ["yes", "y"]:
-            return "yes"
-        elif response in ["no", "n"]:
-            return "no"
+        if response in valid_responses:
+            return response
+        elif response == "menu":
+            menu()
         else:
-            print("Please answer 'yes' or 'no'.")
+            print(error_message)
+
+
+# Replacing yes_no, cash_credit, and confirm_cancel with get_valid_input
+def yes_no(question):
+    return get_valid_input(question, ["yes", "y", "no", "n"], "Please enter yes or no")
 
 
 def instructions():
@@ -53,15 +59,15 @@ def instructions():
     ''')
 
 
-def num_check(question, error, num_type):
-    while True:
-        try:
-            response = num_type(input(question))
-            if response <= 0:
-                print(error)
-            else:
-                return response
-        except ValueError:
+# function to check that an input is only numbers
+def num_check(question, error):
+    valid = False
+    while not valid:
+        response = input(question)
+
+        if response.isdigit() and 6 <= len(response) <= 15:
+            return response
+        else:
             print(error)
 
 
@@ -400,8 +406,8 @@ while True:
 
     processor.total_cost()
 
-    phone_no = num_check("What is your phone number? ", "Please enter a valid phone number", int)
-    print(f"Phone Number: 0{phone_no}")
+    phone_no = num_check("What is your phone number? ", "Please enter a valid phone number")
+    print(f"Phone Number: {phone_no}")
 
     manager.finalize_order()
 
