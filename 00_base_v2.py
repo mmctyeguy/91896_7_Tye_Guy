@@ -340,18 +340,17 @@ if change_order == "yes":
 else:
     print("No changes will be made.")
 
-while finished is True:
 
-    # dict to organise order info
-    your_order_dict = {
-        "Items": pizza_order + sides_order,
-        "Price": pizza_cost + sides_cost
-    }
+# dict to organise order info
+your_order_dict = {
+    "Items": pizza_order + sides_order,
+    "Price": pizza_cost + sides_cost
+}
 
-    total_cost = sum(pizza_cost + sides_cost + extra_cost)
-    order_table = pd.DataFrame(your_order_dict)
-    print(order_table)
-    print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
+total_cost = sum(pizza_cost + sides_cost + extra_cost)
+order_table = pd.DataFrame(your_order_dict)
+print(order_table)
+print("Your current total is ${}".format((sum(sides_cost + pizza_cost))))
 
 print("Thank you for ordering with us")
 collect_method = order_collect()
