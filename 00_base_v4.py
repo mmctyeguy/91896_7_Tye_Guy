@@ -237,6 +237,8 @@ class PaymentProcessor:
         if self.payment_method == "credit":
             surcharge = total * 0.15
             total += surcharge
+            extra_cost.append(surcharge)
+            extra_reason.append("Surcharge")
         print(f"Your total is ${total:.2f}")
         return total
 
@@ -326,9 +328,10 @@ class OrderManager:
     def finalize_order(self):
         name = not_blank("Please enter your name: ".capitalize())
         order_counting()
+        self.processor.payment_type()
+        self.processor.total_cost()
         order_number = order_counting.counter
         write_order_to_file(name, order_number)
-        self.processor.payment_type()
         confirm_order()
 
 
@@ -416,7 +419,7 @@ while True:
         "Items": pizza_order + sides_order + extra_reason,
         "Price": pizza_cost + sides_cost + extra_cost
     }
-
+    # make this round to 2dp somehow
     processor.total_cost()
     order_table = pd.DataFrame(your_order_dict)
     order_table.index = order_table.index + 1
