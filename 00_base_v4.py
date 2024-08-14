@@ -21,15 +21,6 @@ def instructions():
 
     How to order:
 
-    ** Pickup vs Delivery **
-    The program will ask if you would like 
-    to order delivery, or to pick up.
-    If you have chosen delivery, we will need
-    your name, address and phone number. 
-    For pickup, we only need your name and 
-    phone number, and we will provide you 
-    the store's address.
-
     ** Choosing a Pizza **
     You will be asked if you need to look at
     the menu, and then asked to select a
@@ -39,15 +30,30 @@ def instructions():
     You will be asked if you need to look at
     the menu, and then asked to select a side
     dish from the menu.
+    
+    ** Editing your order **
+    You will be asked if you wish to edit
+    your order after you have finished 
+    selecting your items. You can add or
+    remove both sides and pizzas to make
+    sure everything is correct/
+    
+    ** Pickup vs Delivery **
+    The program will ask if you would like 
+    to order delivery, or to pick up.
+    If you have chosen delivery, we will need
+    your name, address and phone number. 
+    For pickup, we only need your name and 
+    phone number, and we will provide you 
+    the store's address.
 
     ** Confirming your order + Payment options **
     You will be asked for a payment type, either
-    cash or credit (1.5% surcharge). Then we will
+    cash or credit (15% surcharge). Then we will
     show your full order with the total price in
     an itemised receipt. 
     You will then be asked to either confirm or 
-    cancel your order, or if you need to make any 
-    changes.
+    cancel your order.
 
     **** Thanks for choosing Pizza Place! ****
     ''')
@@ -227,7 +233,11 @@ class PaymentProcessor:
         elif self.payment_method in ["credit", "cr"]:
             print("You have selected credit as your payment type.\n"
                   "Please be aware that there is a 15% surcharge for credit.")
-            self.payment_method = "credit"
+            are_you_sure = yes_no("Would you like to continue?")
+            if are_you_sure == "yes":
+                self.payment_method = "credit"
+            elif are_you_sure == "no":
+                self.payment_method = "cash"
         else:
             print("Invalid selection. Please choose 'cash' or 'credit'.")
             self.payment_type()  # Recursive call for a valid input
@@ -331,8 +341,8 @@ class OrderManager:
         self.processor.payment_type()
         self.processor.total_cost()
         order_number = order_counting.counter
-        write_order_to_file(name, order_number)
         confirm_order()
+        write_order_to_file(name, order_number)
 
 
 # Global Variables
@@ -406,20 +416,24 @@ while True:
     print("Thank you for ordering with us.")
     collect_method = order_collect()
 
-    processor.total_cost()
-
     phone_no = num_check("What is your phone number? ", "Please enter a valid phone number")
     print(f"Phone Number: {phone_no}")
 
     manager.finalize_order()
 
+    all_items = pizza_order + sides_order + extra_reason
+    all_costs = pizza_cost + sides_cost + extra_cost
+
+    # Round the costs to 2 decimal places
+    all_costs_rounded = [round(cost, 2) for cost in all_costs]
+
     # Display final order
     print("Your final order details:")
     your_order_dict = {
-        "Items": pizza_order + sides_order + extra_reason,
-        "Price": pizza_cost + sides_cost + extra_cost
+        "Items": all_items,
+        "Price": all_costs_rounded
     }
-    # make this round to 2dp somehow
+
     processor.total_cost()
     order_table = pd.DataFrame(your_order_dict)
     order_table.index = order_table.index + 1

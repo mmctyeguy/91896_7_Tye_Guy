@@ -35,7 +35,7 @@ extra_reason = ["delivery"]
 method = payment_type()
 
 # Calculate and display the final total
-final_total = calculate_total(pizza_cost, sides_cost, extra_cost, method)
+final_total = total_cost(pizza_cost, sides_cost, extra_cost, method)
 print(f"Your final total is: ${final_total:.2f}")
 
 
