@@ -4,6 +4,7 @@ from tabulate import tabulate
 # Functions
 
 
+# checks that the user input is either yes or no
 def yes_no(question):
     while True:
         response = input(question).lower()
@@ -15,6 +16,7 @@ def yes_no(question):
             print("Please answer 'yes' or 'no'.")
 
 
+# prints the instructions for how to order using the program
 def instructions():
     print('''\n\n
     **** Welcome to Pizza Place ****
@@ -60,7 +62,8 @@ def instructions():
     ''')
 
 
-# function to check that an input is only numbers
+# function to check that an input has numbers
+# for this program it validates the length to suit a phone number
 def num_check(question, error):
     valid = False
     while not valid:
@@ -72,6 +75,7 @@ def num_check(question, error):
             print(error)
 
 
+# checks that the user input is not blank
 def not_blank(question):
     while True:
         response = input(question)
@@ -81,6 +85,7 @@ def not_blank(question):
             print("Response cannot be blank.")
 
 
+# prints the menu using tabulate to organise the data
 def menu():
     reg = pd.DataFrame(list(zip(reg_menu, reg_price)), columns=['Regular Pizzas', 'Price'])
     print(tabulate(reg, showindex=False, headers=reg.columns))
@@ -96,22 +101,28 @@ def menu():
     print("\n")
 
 
+# keeps track of the amount of pizzas ordered
 def pizza_counting():
     pizza_counting.counter += 1
     return pizza_counting.counter
 
 
+# keeps track of the amount of sides ordered
 def sides_counting():
     sides_counting.counter += 1
     return sides_counting.counter
 
 
+# keeps track of the amount of orders (in a single run of the program)
 def order_counting():
     order_counting.counter += 1
     return order_counting.counter
 
 
+# handles the sides ordering for the program
+# finds the side and adds it + the associated price to the sides_order lists
 def sides_ordering(question, error):
+    # calculates the price of the selected side by indexing it in the price list
     def calculate_sides_price(selected_side):
         return sides_price[sides_menu.index(selected_side)]
 
@@ -129,10 +140,14 @@ def sides_ordering(question, error):
         print(error)
 
 
+# handles the pizza ordering for the program
+# finds and adds the pizza and associated price + adds it to the pizza_order lists
 def pizza_ordering(question, error):
     pizza_menu = reg_menu + gourmet_menu
     prices_list = reg_price + gourmet_price
 
+    # handles the selection of pizza bases
+    # validates input and adds the base_type + price to the extra lists
     def base_select():
         while True:
             base_type = input("What kind of base would you like for your pizza?"
@@ -146,6 +161,7 @@ def pizza_ordering(question, error):
             else:
                 print("Sorry, please select from the list.")
 
+    # calculates the price of the selected pizza by indexing it in the price list
     def calculate_pizza_price():
         return prices_list[pizza_menu.index(response)]
 
@@ -169,6 +185,8 @@ def pizza_ordering(question, error):
         print(error)
 
 
+# asks if the user wants to cancel or confirm order
+# cancels the order if needed
 def confirm_order():
     while True:
         confirm = yes_no("Would you like to confirm your order? (yes/no) ")
@@ -181,6 +199,7 @@ def confirm_order():
             print("Invalid response. Please answer 'yes' or 'no'.")
 
 
+# checks for both numbers and letters in a user inputted string to resemble an address
 def address_check():
     while True:
         address = input("\nWhere would you like the order delivered? ").lower()
@@ -191,6 +210,7 @@ def address_check():
             print("Please enter a valid address")
 
 
+# asks how the user wishes to collect their order, adds a charge for delivery
 def order_collect():
     while True:
         response = input("How would you like to collect your order? (Pickup/Delivery) ").lower()
@@ -209,6 +229,7 @@ def order_collect():
             print("Sorry, please choose pickup or delivery.")
 
 
+# collates the order data and prints it to a file
 def write_order_to_file(name, order_number):
     filename = f"{name.lower()}_order_{order_number}.txt"
     with open(filename, 'w') as file:
@@ -222,10 +243,12 @@ def write_order_to_file(name, order_number):
     print(f"Order details have been saved to {filename}.")
 
 
+# class to handle the payment and total_price calculation
 class PaymentProcessor:
     def __init__(self):
         self.payment_method = None
 
+    # checks the payment type and passes the information on to the total_cost function
     def payment_type(self):
         self.payment_method = input("Please select your payment method. Cash or credit? (ca/cr) ").lower()
         if self.payment_method in ["cash", "ca"]:
@@ -243,6 +266,7 @@ class PaymentProcessor:
             print("Invalid selection. Please choose 'cash' or 'credit'.")
             self.payment_type()  # Recursive call for a valid input
 
+    # calculates + prints the total cost, and when surcharge needs to be added calculates + adds it
     def total_cost(self):
         total = sum(pizza_cost) + sum(sides_cost) + sum(extra_cost)
         if self.payment_method == "credit":
@@ -254,10 +278,12 @@ class PaymentProcessor:
         return total
 
 
+# class to handle the order management/editing
 class OrderManager:
     def __init__(self):
         self.processor = PaymentProcessor()
 
+    # asks if the user wants to edit their order
     def edit_order(self):
         while True:
             edit = yes_no("Do you want to edit your order? (yes/no) ")
@@ -270,6 +296,7 @@ class OrderManager:
             else:
                 print("Invalid response. Please answer 'yes' or 'no'.")
 
+    # asks if they want to add or remove items and passes the parameter to modify_items
     def modify_order(self):
         while True:
             action = input("Would you like to add or remove items? (add/remove/xxx) ").lower()
@@ -282,6 +309,7 @@ class OrderManager:
             else:
                 print("Invalid choice. Please enter 'add', 'remove', or 'xxx'.")
 
+    # asks which order they want to edit and passes the parameter to add_item or remove_item
     def modify_items(self, action):
         while True:
             category = input("Which category would you like to edit? (pizza/sides/xxx) ").lower()
@@ -295,6 +323,7 @@ class OrderManager:
             else:
                 print("Invalid category. Please enter 'pizza' or 'sides'.")
 
+    # handles the logic to add items to the order
     @staticmethod
     def add_item(category):
         if category == 'pizza':
@@ -312,6 +341,7 @@ class OrderManager:
             elif sides_counting.counter <= 5:
                 sides_ordering("What side would you like to add? ", "Please choose from our menu.")
 
+    # asks which item to remove from the order and passes information to the removal function
     def remove_item(self, category):
         if category == 'pizza':
             print("Your current pizza order:")
@@ -339,6 +369,7 @@ class OrderManager:
             else:
                 print("Sorry, that item isn't in your order.")
 
+    # handles the item removal + removes the pizza base information if needed
     @staticmethod
     def remove_from_order(item, order_list, cost_list, is_pizza):
         if item in order_list:
@@ -354,7 +385,8 @@ class OrderManager:
                     extra_reason.pop(index)
                     extra_cost.pop(index)
 
-    def finalize_order(self):
+    # finalises the order and calls several functions to complete the steps
+    def finalise_order(self):
         name = not_blank("Please enter your name: ".capitalize())
         order_counting()
         self.processor.payment_type()
@@ -365,6 +397,7 @@ class OrderManager:
 
 
 # Global Variables
+# lists to store prices and menu information
 
 reg_menu = ["cheese", "pepperoni", "hawaiian", "meatball", "vegetarian"]
 reg_price = [9.99, 11.99, 11.99, 14.99, 14.99]
@@ -375,6 +408,8 @@ sides_price = [13.99, 3.99, 3.99, 7.99, 9.99, 5.99]
 type_list = ["regular", "gluten free", "deep pan", "shallow pan"]
 type_price = [0.00, 0.50, 1.50, 0.50]
 
+# lists to store order information
+
 pizza_order = []
 sides_order = []
 pizza_cost = []
@@ -382,9 +417,11 @@ sides_cost = []
 extra_cost = []
 extra_reason = []
 
+# counters to check amounts ordered
 pizza_counting.counter = 0
 sides_counting.counter = 0
-order_counting.counter = 0  # Track order counts to avoid overwriting files
+# Track order counts to avoid overwriting files
+order_counting.counter = 0
 
 # Main Routine
 
@@ -438,8 +475,9 @@ while True:
     phone_no = num_check("What is your phone number? ", "Please enter a valid phone number")
     print(f"Phone Number: {phone_no}")
 
-    manager.finalize_order()
+    manager.finalise_order()
 
+    # collates order information for printing
     all_items = pizza_order + sides_order + extra_reason
     all_costs = pizza_cost + sides_cost + extra_cost
 
