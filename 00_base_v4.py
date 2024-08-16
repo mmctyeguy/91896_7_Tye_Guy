@@ -24,19 +24,20 @@ def instructions():
     ** Choosing a Pizza **
     You will be asked if you need to look at
     the menu, and then asked to select a
-    pizza from the menu. 
+    pizza from the menu. You must order
+    at least one pizza!
 
     ** Choosing a Side Dish **
-    You will be asked if you need to look at
-    the menu, and then asked to select a side
-    dish from the menu.
+    You will then asked to select a side
+    dish from the menu, or if you wish
+    to finish ordering.
     
     ** Editing your order **
     You will be asked if you wish to edit
     your order after you have finished 
     selecting your items. You can add or
     remove both sides and pizzas to make
-    sure everything is correct/
+    sure everything is correct
     
     ** Pickup vs Delivery **
     The program will ask if you would like 
@@ -297,9 +298,19 @@ class OrderManager:
     @staticmethod
     def add_item(category):
         if category == 'pizza':
-            pizza_ordering("What pizza would you like to add? ", "Please choose from our menu.")
+            if pizza_counting.counter >= 5:
+                print("Sorry, you've reached the maximum amount of orders")
+                print(f"You have ordered {', '.join(pizza_order)}.")
+                processor.total_cost()
+            elif pizza_counting.counter <= 5:
+                pizza_ordering("What pizza would you like to add? ", "Please choose from our menu.")
         elif category == 'sides':
-            sides_ordering("What side would you like to add? ", "Please choose from our menu.")
+            if sides_counting.counter >= 5:
+                print("Sorry, you've reached the maximum amount of orders")
+                print(f"You have ordered {', '.join(sides_order)}.")
+                processor.total_cost()
+            elif sides_counting.counter <= 5:
+                sides_ordering("What side would you like to add? ", "Please choose from our menu.")
 
     def remove_item(self, category):
         if category == 'pizza':
@@ -308,9 +319,9 @@ class OrderManager:
             item = input("Which pizza would you like to remove? ").lower()
             if item in pizza_order:
                 if pizza_counting.counter > 1:
-                    self.remove_from_order(item, pizza_order, pizza_cost)
+                    self.remove_from_order(item, pizza_order, pizza_cost, True)
                     pizza_counting.counter -= 1
-                elif pizza_counting.counter <= 1:
+                elif pizza_counting.counter == 1:
                     print("Sorry, you must order at least 1 pizza.")
             elif item == "xxx":
                 pass
@@ -321,19 +332,27 @@ class OrderManager:
             print("\n".join(sides_order))
             item = input("Which side would you like to remove? ").lower()
             if item in sides_order:
-                self.remove_from_order(item, sides_order, sides_cost)
+                self.remove_from_order(item, sides_order, sides_cost, False)
                 sides_counting.counter -= 1
             elif item == "xxx":
                 pass
             else:
                 print("Sorry, that item isn't in your order.")
 
-    def remove_from_order(self, item, order_list, cost_list):
-        index = order_list.index(item)
-        order_list.pop(index)
-        cost_list.pop(index)
-        print(f"{item} has been removed.")
-        self.processor.total_cost()
+    @staticmethod
+    def remove_from_order(item, order_list, cost_list, is_pizza):
+        if item in order_list:
+            index = order_list.index(item)
+            order_list.pop(index)
+            cost_list.pop(index)
+            print(f"{item} has been removed.")
+
+            # If removing a pizza, also remove the base cost and reason
+            if is_pizza:
+                if index < len(extra_reason):
+                    # Remove base and cost from the lists
+                    extra_reason.pop(index)
+                    extra_cost.pop(index)
 
     def finalize_order(self):
         name = not_blank("Please enter your name: ".capitalize())
